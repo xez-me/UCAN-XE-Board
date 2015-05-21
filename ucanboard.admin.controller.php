@@ -25,7 +25,10 @@ class ucanboardAdminController extends ucanboard {
 		}
 
 		$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'module_srl', $output->get('module_srl'), 'act', 'dispUcanboardAdminInfo');
-		header('location:'.$returnUrl);
+
+        Context::close();
+		header('location:'.$returnUrl, 302, true);
+        exit();
 	}
 
 	function procUcanboardAdminDelete() {
@@ -34,7 +37,9 @@ class ucanboardAdminController extends ucanboard {
 		$output = $oModuleController->deleteModule($module_srl);
 
 		$returnUrl = getNotEncodedUrl('', 'module', 'admin', 'act', 'dispUcanboardAdminList');
-		header('location:'.$returnUrl);
+        Context::close();
+        header('location:'.$returnUrl, 302, true);
+        exit();
 	}
 
 	function procUcanboardAdminUpdateConfig() {
@@ -45,7 +50,9 @@ class ucanboardAdminController extends ucanboard {
 		$oModuleController->updateModuleConfig('ucanboard', $args);
 
 		$returnUrl = getNotEncodedUrl('', 'module', 'admin', 'act', 'dispUcanboardAdminList');
-		header('location:'.$returnUrl);
+        Context::close();
+        header('location:'.$returnUrl, 302, true);
+        exit();
 	}
 }
 ?>
