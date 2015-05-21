@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+	<grants>
+		<grant name="view">
+			<title xml:lang="ko">글 읽기</title>
+		</grant>
+		<grant name="write_document" default="member">
+			<title xml:lang="ko">글 작성</title>
+		</grant>
+		<grant name="write_comment" default="member">
+			<title xml:lang="ko">댓글 작성</title>
+		</grant>
+	</grants>
+	<permissions>
+		<permission action="dispUcanboardList" default="member" />
+		<permission action="dispBoardWrite" target="member" />
+		<permission action="dispBoardDelete" target="member" />
+		<permission action="dispBoardModifyComment" target="member" />
+		<permission action="dispBoardDeleteComment" target="member" />
+		<permission action="procBoardInsertDocument" default="member" />
+		<permission action="procBoardDeleteDocument" default="member" />
+		<permission action="procBoardInsertComment" default="member" />
+		<permission action="procBoardDeleteComment" default="member" />
+
+		<permission action="dispUcanboardAdminList" target="manager" />
+		<permission action="dispUcanboardAdminInfo" target="manager" />
+		<permission action="dispUcanboardAdminGrantInfo" target="manager" />
+		<permission action="procUcanboardAdminUpdate" target="manager" />
+		<permission action="procUcanboardAdminDelete" target="manager" />
+		<permission action="procUcanboardAdminUpdateAccessToken" target="manager" />
+	</permissions>
+	<actions>
+		<action name="dispUcanboardList" type="view" index="true" />
+		<action name="dispBoardWrite" type="view" />
+		<action name="dispBoardDelete" type="view" />
+		<action name="dispBoardModifyComment" type="view" />
+		<action name="dispBoardDeleteComment" type="view" />
+		<action name="procBoardInsertDocument" type="controller" standalone="true" />
+		<action name="procBoardDeleteDocument" type="controller" standalone="true" />
+		<action name="procBoardInsertComment" type="controller" standalone="true" />
+		<action name="procBoardDeleteComment" type="controller" standalone="true" />
+
+		<action name="dispUcanboardAdminList" type="view" admin_index="true" menu_index="true" />
+		<action name="dispUcanboardAdminInfo" type="view" setup_index="true" />
+		<action name="dispUcanboardAdminGrantInfo" type="view" setup_index="true" />
+		<action name="procUcanboardAdminUpdate" type="controller" standalone="true" />
+		<action name="procUcanboardAdminDelete" type="controller" standalone="true" />
+		<action name="procUcanboardAdminUpdateAccessToken" type="controller" standalone="true" />
+	</actions>
+</module>

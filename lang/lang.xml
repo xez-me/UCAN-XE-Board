@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="ucanboard">
+		<value xml:lang="ko"><![CDATA[UCAN 통합게시판]]></value>
+	</item>
+	<item name="ucan_originboard">
+		<value xml:lang="ko"><![CDATA[연동게시판]]></value>
+	</item>
+	<item name="ucan_about_originboard">
+		<value xml:lang="ko"><![CDATA[이 모듈과 연동될 서버상의 게시판을 지정합니다. 지정하지 않을 경우 게시판 이용이 불가능합니다.]]></value>
+	</item>
+	<item name="ucan_alert_originboard_null">
+		<value xml:lang="ko"><![CDATA[미지정]]></value>
+	</item>
+	<item name="ucan_sitecode">
+		<value xml:lang="ko"><![CDATA[사이트 코드]]></value>
+	</item>
+	<item name="ucan_sitecode_error">
+		<value xml:lang="ko"><![CDATA[사이트 코드 오류]]></value>
+	</item>
+	<item name="ucan_about_sitecode">
+		<value xml:lang="ko"><![CDATA[각 대학 커뮤니티별로 부여된 알파벳 세 글자로 구성된 고유 코드입니다. 코드 오류가 발생할 경우 통합게시판 서버 관리자에게 문의해 주세요.]]></value>
+	</item>
+	<item name="ucan_bbs_list">
+		<value xml:lang="ko"><![CDATA[게시판 목록]]></value>
+	</item>
+	<item name="ucan_bbs_create">
+		<value xml:lang="ko"><![CDATA[연동게시판 생성]]></value>
+	</item>
+	<item name="ucan_bbs_delete_confirm">
+		<value xml:lang="ko"><![CDATA[이 게시판을 삭제하겠습니까?\n게시판을 삭제하더라도 서버상의 게시판은 삭제되지 않습니다.]]></value>
+	</item>
+	<item name="ucan_access_token">
+		<value xml:lang="ko"><![CDATA[Access Token]]></value>
+	</item>
+</lang>

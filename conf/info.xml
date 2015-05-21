@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="0.2">
+	<title xml:lang="ko">UCAN 통합게시판</title>
+	<title xml:lang="en">UCAN Joint Board</title>
+	<description xml:lang="ko">UCAN 소속 사이트에서 공동으로 사용할 수 있는 게시판 모듈입니다.</description>
+	<description xml:lang="en">UCAN 소속 사이트에서 공동으로 사용할 수 있는 게시판 모듈입니다.</description>
+	<version>0.4.4</version>
+	<date>2013-05-04</date>
+	<category>service</category>
+
+	<author email_address="encyphered@gmail.com" link="mailto:encyphered@gmail.com">
+		<name xml:lang="ko">cypher</name>
+		<name xml:lang="en">cypher</name>
+	</author>
+</module>

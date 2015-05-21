@@ -1,0 +1,281 @@
+<link rel="stylesheet" href="../../xe/modules/board/skins/xe_board/css/common.css" type="text/css" charset="UTF-8" media="all" />
+<link rel="stylesheet" href="../../xe/modules/board/skins/xe_board/css/white.css" type="text/css" charset="UTF-8" media="all" />
+
+<script type="text/javascript" src="../../ucanboard/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="../../ucanboard/js/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript" src="../../ucanboard/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="http://{$api_server_host}/assets/application.js"></script>
+
+<div id="ucanboard_container">
+	<div class="content_wrapper"></div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[ 
+<!--@if($is_logged)-->
+UCAN.Board.Account = {
+	userId: '{$logged_info->member_srl}',
+	userName : '{$logged_info->nick_name}'
+};
+<!--@end-->
+
+<!--@if($permissions->post_show)-->
+UCAN.Board.Permissions.postShow = true;
+<!--@else-->
+UCAN.Board.Permissions.postShow = false;
+<!--@end-->
+<!--@if($permissions->post_create)-->
+UCAN.Board.Permissions.postCreate = true;
+<!--@else-->
+UCAN.Board.Permissions.postCreate = false;
+<!--@end-->
+<!--@if($permissions->comment_create)-->
+UCAN.Board.Permissions.commentCreate = true;
+<!--@else-->
+UCAN.Board.Permissions.commentCreate = false;
+<!--@end-->
+
+<!--@foreach($boards as $board)-->
+UCAN.Board.BoardList.push({
+	name:'{$board->name}',
+	title:'{addslashes($board->title)}',
+	url:'{$board->url}'
+});
+<!--@end-->
+
+UCAN.Board.SiteCode = '{$sitecode}';
+UCAN.Board.CurrentBoard = '{$board_name}';
+
+UCAN.Board.Config.Wrapper.content = '#ucanboard_container>div.content_wrapper';
+UCAN.Board.Config.requestProxyUrl = '{$request_proxy_url}';
+UCAN.Board.Config.Editor.Post.textareaId = 'post_body';
+UCAN.Board.Config.Editor.Comment.textareaId = 'comment_body';
+UCAN.Board.Config.Pager = {
+	current: '<strong>:page</strong>\n',
+	page: '<a href=":url">:page</a>\n',
+	first: '<a href=":url" class="prevEnd">첫 페이지</a>\n',
+	last: '<a href=":url" class="nextEnd">끝 페이지</a>'
+};
+
+UCAN.Board.Indicator = {
+	initialize: function() {
+	},
+	hide: function() {
+		(function($) {
+			jQuery('.wfsr').hide();
+		})(jQuery);
+	},
+	show: function() {
+		(function($) {
+			jQuery('.wfsr').html('서버에 요청 중입니다. 잠시만 기다려주세요.').show();
+		})(jQuery);
+	}
+};
+
+UCAN.Board.initialize(jQuery);
+//]]>
+</script>
+
+<script type="text/template" id="template_post_write_form">
+<form class="post">
+	<div class="boardWrite">
+		<div class="title">
+			<label class="title">제목</label>
+			<input type="text" name="title" class="title inputTypeText" />
+		</div>
+		<div class="option">
+			<input id="post_anonymous" name="anonymous" type="checkbox">
+			<label for="post_anonymous">익명</label>
+		</div>
+		<div class="editor">
+			<textarea name="body" cols="80" rows="6" id="post_body" />
+		</div>
+	</div>
+	<div class="leftButtonBox" style="margin-top: 5px">
+		<span class="button btn"><input type="submit" value="등록" accesskey="s"></span>
+	</div>
+	<div class="rightButtonBox" style="margin-top: 5px">
+		<span class="btn"><a href="<@=command.back_url@>" class="button">뒤로</a></span>
+	</div>
+</form>
+</script>
+
+<script type="text/template" id="template_post_list">
+<div class="boardInformation">
+	<@ if (UCAN.Board.BoardList.length > 1) { @>
+	<ul class="accountNavigation" style="border-right:1px solid #ccc; float:left;">
+		<@ for (var i in UCAN.Board.BoardList) { @>
+		<li style="border-left:1px solid #ccc;padding:0 10px;margin: 0;">
+			<a href="<@=UCAN.Board.BoardList[i].url@>" style="font-size: 10pt; font-weight:bold"><@=UCAN.Board.BoardList[i].title@></a>
+		</li>
+		<@ } @>
+	</ul>
+	<@ } @>
+	<div class="articleNum" style="float:right">글 수 <strong><@=totalPosts@></strong></div>
+</div>
+<table class="boardList" cellspacing="0">
+	<thead>
+		<th class="title no_line">
+			<div>제목</div>
+		</th>
+		<th class="author">
+			<div>이름</div>
+		</th>
+		<th class="date">
+			<div>날짜</div>
+		</th>
+		<th class="reading">
+			<div>조회 수</div>
+		</th>
+	</thead>
+	<tbody>
+		<@ for (var i in posts) { @>
+		<tr class="bg1">
+			<td class="title">
+				<a href="<@=posts[i].uri@>"><@=posts[i].title@></a>
+				<@ if (posts[i].comments_count > 0) { @>
+				<span class="replyAndTrackback" title="Replies">
+					<img src="/xe/modules/board/skins/xe_board/images/white/iconReply.gif" alt="" width="12" height="12" class="icon">
+					<strong><@=posts[i].comments_count@></strong>
+				</span>
+				<@ } @>
+			</td>
+			<td class="author">
+				<div class="member">
+					[<@=posts[i].university@>]
+					<@=posts[i].name@>
+				</div>
+			</td>
+			<td class="date"><@=posts[i].created_at.format('%Y-%m-%d')@></td>
+			<td class="reading"><@=posts[i].reads@></td>
+		</tr>
+		<@ } @>
+	</tbody>
+</table>
+
+<div class="boardBottom">
+	<div class="rightButtonBox">
+		<@ if (command.write_url) { @>
+		<span class="btn"><a href="<@=command.write_url@>" class="button">글쓰기</a></span>
+		<@ } @>
+	</div>
+	<div class="pagination a1">
+		<@=pageNavigation@>
+	</div>
+</div>
+</script>
+
+<script type="text/template" id="template_post_show">
+<div class="post show boardRead">
+	<div class="originalContent">
+		<div class="readHeader">
+			<div class="titleAndUser">
+				<div class="title">
+					<h4><@=title@></h4>
+				</div>
+				<div class="userInfo">
+					<div class="author">[<@=university@>] <span><@=name@></span></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="dateAndCount">
+				<div class="uri" title="게시글 주소">
+					<a href="<@=uri@>"><@=uri@></a>
+				</div>
+				<div class="date" title="등록일">
+					<@=created_at.format('<strong>%Y.%m.%d</strong> %H:%I:%S')@>
+					(<@=ip@>)
+				</div>
+				<div class="readedCount" title="조회 수"><@=reads@></div>
+				<div class="replyAndTrackback">
+					<div class="replyCount"><@=comments_count@></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+			<div class="readBody">
+				<div class="contentBody">
+					<@=body@>
+				</div>
+			</div>
+	</div>
+	<div class="contentButton">
+		<@ if (can_edit) { @>
+		<span class="btn"><a href="<@=command.edit_url@>" class="button">수정</a></span>
+		<@ } @>
+		<@ if (can_delete) { @>
+		<span class="btn"><a href="<@=command.delete_url@>" class="button">삭제</a></span>
+		<@ } @>
+		<span class="btn"><a href="<@=command.list_url@>" class="button">목록</a></span>
+	</div>
+</div>
+
+<@ if (comments.length > 0) { @>
+<div class="replyBox">
+	<@ for (var i in comments) { @>
+	<div class="replyItem">
+		<div class="replyOption">
+			<@ if (comments[i].can_delete) { @>
+			<a href="<@=comments[i].delete_url@>"><img src="/xe/modules/board/skins/xe_board/images/common/buttonDeleteX.gif" alt="삭제" width="12" height="13"></a>
+			<@ } @>
+			<@ if (comments[i].can_edit) { @>
+			<a href="<@=comments[i].edit_url@>"><img src="/xe/modules/board/skins/xe_board/images/white/buttonModifyE.gif" alt="수정" width="20" height="17"></a>
+			<@ } @>
+		</div>
+		<div class="date">
+			<@=comments[i].created_at.format('<strong>%Y.%m.%d</strong> %H:%I:%S')@>
+			(<@=comments[i].ip@>)
+		</div>
+		<div class="author">[<@=comments[i].university@>] <@=comments[i].name@></div>
+		<div class="clear"></div>
+		<div class="replyContent">
+			<div class="xe_content"><@=comments[i].body@></div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<@ } @>
+</div>
+<@ } @>
+
+<@ if (UCAN.Board.Permissions.commentCreate) { @>
+<form class="comment boardEditor">
+	<div class="boardWrite commentEditor">
+		<div class="editor">
+			<textarea name="body" cols="80" rows="6" id="comment_body" />
+		</div>
+	</div>
+	<div class="commentButton tRight">
+		<span class="button btn"><input type="submit" value="댓글 등록" accesskey="s"></span>
+	</div>
+</form>
+<@ } @>
+</script>
+
+<script type="text/template" id="template_post_delete_form">
+<div class="smallBox w268">
+	<div class="header">
+		<h3>삭제하시겠습니까?</h3>
+	</div>
+	<form class="post confirm">
+		<div class="inputPassword tCenter">
+			<span class="button btn"><input type="submit" value="삭제" accesskey="s"></span>
+			<span class="btn"><a href="<@=post_url@>" class="button ">취소</a></span>
+		</div>
+	</form>
+</div>
+</script>
+
+<script type="text/template" id="template_comment_edit_form">
+<form class="comment boardEditor">
+	<div class="boardWrite commentEditor">
+		<div class="editor">
+			<textarea name="body" cols="80" rows="6" id="comment_body" />
+		</div>
+	</div>
+	<div class="commentButton tRight">
+		<span class="button btn"><input type="button" value="돌아가기" onclick="history.back();"></span>
+		<span class="button btn"><input type="submit" value="댓글 등록" accesskey="s"></span>
+	</div>
+</form>
+</script>

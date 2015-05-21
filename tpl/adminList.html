@@ -1,0 +1,74 @@
+<include target="header.html" />
+
+<form action="./" method="post">
+	<input type="hidden" name="module" value="ucanboard" />
+	<input type="hidden" name="act" value="procUcanboardAdminUpdateAccessToken" />
+	<input type="hidden" name="module_srl" value="{$module_srl}" />
+	<div class="table">
+		<table width="100%" border="1" cellspacing="0">
+		<tr>
+			<th scope="row" style="width:100px">{$lang->ucan_access_token}</th>
+			<td class="text">
+				<input type="text" name="access_token" style="width:600px" value="{$access_token}" />
+			</td>
+		</tr>
+		<tr>
+			<th class="row">{$lang->ucan_sitecode}</th>
+			<td class="text">
+				<!--@if($site_error)-->
+				<strong style="color:red">{$lang->ucan_sitecode_error}</strong>
+				<!--@else-->
+				<strong>{$site_code}</strong> ({$site_name})
+				<!--@end-->
+				<p>{$lang->ucan_about_sitecode}</p>
+			</td>
+		</tr>
+		</table>
+	</div>
+	<div class="btnArea">
+		<span class="btn"><input type="submit" value="{$lang->cmd_save}" /></span>
+	</div>
+</form>
+
+<h2 class="h2">{$lang->ucan_bbs_list}</h2>
+
+<div class="cnb">
+<ul>
+	<li class="active"|cond="$act=='dispUcanboardAdminList'"><a href="{getUrl('act','dispUcanboardAdminList','module_srl','')}">{$lang->ucan_bbs_list}</a></li>
+	<li class="active"|cond="$act=='dispUcanboardAdminInfo'"><a href="{getUrl('act','dispUcanboardAdminInfo')}">{$lang->ucan_bbs_create}</a></li>
+</ul>
+</div>
+
+<div class="table">
+	<table width="100%" border="1" cellspacing="0">
+	<thead>
+		<tr>
+			<th>{$lang->no}</th>
+			<th>{$lang->mid}</th>
+			<th>{$lang->browser_title}</th>
+			<th>{$lang->ucan_originboard}</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	<!--@foreach($modules as $index => $module_info)-->
+	<tr>
+		<td>{$index+1}</td>
+		<td>{$module_info->mid}</td>
+		<td>{$module_info->browser_title}</td>
+		<td>
+			<!--@if($module_info->ucan_originboard_exist)-->
+			{$module_info->ucan_originboard} ({$module_info->ucan_originboard_title})
+			<!--@else-->
+			<strong style="color:red">{$lang->ucan_alert_originboard_null}</strong>
+			<!--@end-->
+		</td>
+		<td>
+			<a href="{getUrl('act','dispUcanboardAdminInfo','module_srl',$module_info->module_srl)}">{$lang->cmd_setup}</a>
+			<a href="{getUrl('act','procUcanboardAdminDelete','module_srl', $module_info->module_srl)}" onclick="return window.confirm('{$lang->ucan_bbs_delete_confirm}');">{$lang->cmd_delete}</a>	
+		</td>
+	</tr>
+	<!--@end-->
+	</tbody>
+    </table>
+</div>

@@ -1,0 +1,22 @@
+<h2 class="h2">
+<!--@if ($module_info->mid)-->
+	{$module_info->mid}
+	<!--@if($act=='dispUcanboardAdminInfo')-->
+	{$lang->cmd_setup}
+	<!--@elseif($act=='dispUcanboardAdminGrantInfo')-->
+	{$lang->cmd_manage_grant}
+	<!--@end-->
+<!--@else-->
+	{$lang->ucan_bbs_create}
+<!--@end-->
+</h2>
+
+<!--@if ($module_info->mid)-->
+<div class="cnb">
+<ul>
+	<li><a href="{getUrl('act','dispUcanboardAdminList','module_srl','')}">{$lang->ucan_bbs_list}</a></li>
+	<li class="active"|cond="$act=='dispUcanboardAdminInfo'"><a href="{getUrl('act','dispUcanboardAdminInfo','module_srl',$module_info->module_srl)}">{$lang->cmd_setup}</a></li>
+	<li class="active"|cond="$act=='dispUcanboardAdminGrantInfo'"><a href="{getUrl('act','dispUcanboardAdminGrantInfo')}">{$lang->cmd_manage_grant}</a></li>
+</ul>
+</div>
+<!--@end-->
