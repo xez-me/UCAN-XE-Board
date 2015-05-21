@@ -40,6 +40,7 @@ class ucanboardController extends ucanboard {
 			$disallowed_permissions[] = 'comment.create';
 		$request_header[] = sprintf('X-UCAN-Disallowed-Permission: %s', implode($disallowed_permissions, ','));
 		$request_header[] = sprintf('X-UCAN-AccessToken: %s', $this->access_token);
+		$request_header[] = 'X-UCAN-Version: 0.4.5';
 
 		$session = curl_init();
 		if ($method == 'POST') {
@@ -65,6 +66,7 @@ class ucanboardController extends ucanboard {
 		curl_setopt($session, CURLOPT_HEADER, false);
 		curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($session, CURLOPT_HTTPHEADER, $request_header);
+		curl_setopt($session, CURLOPT_TIMEOUT_MS, 1000);
 
 		$response_body = curl_exec($session);
 		$response_info = curl_getinfo($session);

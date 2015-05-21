@@ -431,8 +431,7 @@ class ucanboardView extends ucanboard {
 		$request_header[] = sprintf('X-UCAN-BoardName: %s', $this->module_info->ucan_originboard);
 		$request_header[] = sprintf('X-UCAN-Disallowed-Permission: %s', implode($disallowed_permissions, ','));
 		$request_header[] = sprintf('X-UCAN-AccessToken: %s', $config->access_token);
-		// TODO
-		// VERSION
+		$request_header[] = 'X-UCAN-Version: 0.4.5';
 		$reads = $_COOKIE['ucnb_reads'];
 		if ($reads) {
 			$request_header[] = sprintf('Cookie: reads=%s', urlencode($reads));
@@ -445,6 +444,7 @@ class ucanboardView extends ucanboard {
 		curl_setopt($session, CURLOPT_HTTPHEADER, $request_header);
 		$url = sprintf("http://%s%s", self::REMOTE_HOST, $url);
 		curl_setopt($session, CURLOPT_URL, $url);
+		curl_setopt($session, CURLOPT_TIMEOUT_MS, 1000);
 
 		$response_body = curl_exec($session);
 		$json = json_decode($response_body);

@@ -4,7 +4,7 @@
 	<title xml:lang="en">UCAN Joint Board</title>
 	<description xml:lang="ko">UCAN 소속 사이트에서 공동으로 사용할 수 있는 게시판 모듈입니다.</description>
 	<description xml:lang="en">UCAN 소속 사이트에서 공동으로 사용할 수 있는 게시판 모듈입니다.</description>
-	<version>0.4.4</version>
+	<version>0.4.5</version>
 	<date>2013-05-04</date>
 	<category>service</category>
 
