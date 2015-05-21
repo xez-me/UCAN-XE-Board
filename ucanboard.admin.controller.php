@@ -1,6 +1,7 @@
 <?php
 class ucanboardAdminController extends ucanboard {
-	function init() {
+	function init()
+    {
 	}
 
 	function procUcanboardAdminUpdate() {
@@ -29,7 +30,6 @@ class ucanboardAdminController extends ucanboard {
 
 	function procUcanboardAdminDelete() {
 		$oModuleController = &getController('module');
-
 		$module_srl = Context::get('module_srl');
 		$output = $oModuleController->deleteModule($module_srl);
 

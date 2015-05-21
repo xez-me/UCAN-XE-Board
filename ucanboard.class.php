@@ -16,7 +16,8 @@ class ucanboard extends ModuleObject {
 		return new Object();
 	}
 
-	function checkUpdate() {
+	function checkUpdate()
+    {
 		return false;
 	}
 
