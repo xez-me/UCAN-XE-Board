@@ -10,7 +10,7 @@ class ucanboardController extends ucanboard {
 	}
 
 	function request($method, $url, $params, $request_body) {
-		$url = sprintf("http://%s%s", $this->remote_host, $url);
+		$url = sprintf("http://%s%s", self::REMOTE_HOST, $url);
 
 		$request_header = array('Accept-Language: en');
 
@@ -74,6 +74,10 @@ class ucanboardController extends ucanboard {
 	}
 
 	function procBoardInsertDocument() {
+		if (!$this->checkCSRFToken()) {
+			return new Object(-1, 'msg_invalid_request');
+		}
+
 		$mid = Context::get('mid');
 
 		$title = Context::get('title');
@@ -112,6 +116,10 @@ class ucanboardController extends ucanboard {
 	}
 
 	function procBoardDeleteDocument() {
+		if (!$this->checkCSRFToken()) {
+			return new Object(-1, 'msg_invalid_request');
+		}
+
 		$document_srl = Context::get('document_srl');
 		$response = $this->request('DELETE', sprintf('/posts/%d.json', $document_srl), '', NULL);
 		$response_info = $response['info'];
@@ -124,6 +132,10 @@ class ucanboardController extends ucanboard {
 	}
 
 	function procBoardInsertComment() {
+		if (!$this->checkCSRFToken()) {
+			return new Object(-1, 'msg_invalid_request');
+		}
+
 		$document_srl = Context::get('document_srl');
 		$content = Context::get('content');
 
@@ -150,6 +162,10 @@ class ucanboardController extends ucanboard {
 	}
 
 	function procBoardDeleteComment() {
+		if (!$this->checkCSRFToken()) {
+			return new Object(-1, 'msg_invalid_request');
+		}
+
 		$comment_srl = Context::get('comment_srl');
 
 		$response = $this->request('DELETE', sprintf('/comments/%d.json', $comment_srl), '', NULL);
@@ -165,6 +181,32 @@ class ucanboardController extends ucanboard {
 		$this->add('document_srl', Context::get('document_srl'));
 
 		$this->setMessage('success_deleted');
+	}
+
+	function checkCSRFToken() {
+		if (!checkCSRF()) {
+			return false;
+		}
+
+		$token_expires = $_SESSION[self::SESSION_KEY][self::CSRF_EXPIRE_SESSION_KEY];
+		$stored_token = $_SESSION[self::SESSION_KEY][self::CSRF_VALUE_SESSION_KEY];
+		$request_token = $_SERVER['HTTP_X_XE_UCAN_CSRFTOKEN'];
+
+		if (!$token_expires || !$stored_token || !$request_token) {
+			return false;
+		}
+
+		if ($token_expires + self::CSRF_EXPIRE_SECOND < time()) {
+			return false;
+		}
+
+		if ($stored_token != $request_token) {
+			return false;
+		}
+
+		unset($_SERSSION[self::SESSION_KEY]);
+
+		return true;
 	}
 }
 ?>

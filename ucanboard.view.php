@@ -267,6 +267,7 @@ class ucanboardView extends ucanboard {
 
 		$this->setSkin($oBoardModule);
 		$this->setTemplateFile('list');
+		$this->addCSRFToken();
 	}
 
 	function dispBoardWrite() {
@@ -304,6 +305,7 @@ class ucanboardView extends ucanboard {
 		Context::addJsFilter($oBoardModule->module_path.'tpl/filter', 'insert.xml');
 
 		$this->setTemplateFile('write_form');
+		$this->addCSRFToken();
 	}
 
 	function dispBoardDelete() {
@@ -332,6 +334,7 @@ class ucanboardView extends ucanboard {
 
 		$this->setSkin($oBoardModule);
 		$this->setTemplateFile('delete_form');
+		$this->addCSRFToken();
 	}
 
 	function dispBoardModifyComment() {
@@ -365,6 +368,7 @@ class ucanboardView extends ucanboard {
 		Context::addJsFilter($oBoardModule->module_path.'tpl/filter', 'insert_comment.xml');
 
 		$this->setTemplateFile('comment_form');
+		$this->addCSRFToken();
 	}
 
 	function dispBoardDeleteComment() {
@@ -394,6 +398,7 @@ class ucanboardView extends ucanboard {
 		Context::addJsFile($oBoardModule->module_path.'tpl/js/board.js');
 		Context::addJsFilter($oBoardModule->module_path.'tpl/filter', 'delete_comment.xml');
 		$this->setTemplateFile('delete_comment_form');
+		$this->addCSRFToken();
 	}
 
 	function getDocument($document_srl, &$config, &$logged_info) {
@@ -438,7 +443,7 @@ class ucanboardView extends ucanboard {
 		curl_setopt($session, CURLOPT_HEADER, false);
 		curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($session, CURLOPT_HTTPHEADER, $request_header);
-		$url = sprintf("http://%s%s", $this->remote_host, $url);
+		$url = sprintf("http://%s%s", self::REMOTE_HOST, $url);
 		curl_setopt($session, CURLOPT_URL, $url);
 
 		$response_body = curl_exec($session);
@@ -483,8 +488,21 @@ class ucanboardView extends ucanboard {
 
 	function alertMessage($message)
 	{
-		$script =  sprintf('<script> jQuery(function(){ alert("%s"); } );</script>', Context::getLang($message));
+		$script = sprintf('<script> jQuery(function(){ alert("%s"); } );</script>', Context::getLang($message));
 		Context::addHtmlFooter( $script );
+	}
+
+	function addCSRFToken() {
+		Context::addMetaTag('UCANBoard-CSRFToken', $this->generateCSRFToken());
+		Context::addJsFile($this->module_path.'js/csrf.js');
+	}
+
+	function generateCSRFToken() {
+		$hash = md5(sprintf('%s %s', rand(), microtime()));
+		$_SESSION[self::SESSION_KEY][self::CSRF_VALUE_SESSION_KEY] = $hash;
+		$_SESSION[self::SESSION_KEY][self::CSRF_EXPIRE_SESSION_KEY] = time() + self::CSRF_EXPIRE_SECOND;
+
+		return $hash;
 	}
 }
 ?>

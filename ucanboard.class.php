@@ -10,8 +10,12 @@ function json_decode2($json) {
 }
 
 class ucanboard extends ModuleObject {
-	var $remote_host = "api.bbs.ucan.or.kr";
-	// var $remote_host = "127.0.0.1:3030";
+	const REMOTE_HOST = "api.bbs.ucan.or.kr";
+
+	const SESSION_KEY = 'XE_UCANBOARD';
+	const CSRF_VALUE_SESSION_KEY = 'csrf_token';
+	const CSRF_EXPIRE_SESSION_KEY = 'csrf_expires';
+	const CSRF_EXPIRE_SECOND = 600;
 
 	function moduleInstall() {
 		$oModuleController = &getController('module');
@@ -26,7 +30,7 @@ class ucanboard extends ModuleObject {
 	function handshake($access_token) {
 		$session = curl_init();
 		curl_setopt($session, CURLOPT_POST, true);
-		curl_setopt($session, CURLOPT_URL, sprintf("http://%s/handshake", $this->remote_host));
+		curl_setopt($session, CURLOPT_URL, sprintf("http://%s/handshake", self::REMOTE_HOST));
 		curl_setopt($session, CURLOPT_HEADER, false);
 		curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($session, CURLOPT_HTTPHEADER, array(
