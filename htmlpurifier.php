@@ -6,6 +6,7 @@ function sanitize_user_html($html) {
 
 	if ($purifier == NULL) {
 		$config = HTMLPurifier_Config::createDefault();
+		$config->set('Cache.SerializerPath', dirname(__FILE__).'/../../files/cache');
 		$purifier = new HTMLPurifier($config);
 	}
 
