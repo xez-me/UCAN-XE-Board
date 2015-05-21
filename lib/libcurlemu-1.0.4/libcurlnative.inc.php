@@ -60,7 +60,7 @@ if (!extension_loaded("curl") && !function_exists("curl_init")) {
 if (!class_exists("HTTPRetriever")) {
 	if (is_readable(dirname(__FILE__)."/class_HTTPRetriever.php")) {
 		define("HTTPR_NO_REDECLARE_CURL",true);
-		require_once(dirname(__FILE__)."/class_HTTPRetriever.php");
+		require_once(dirname(__FILE__) . "/class_HTTPRetriever.php");
 	} else {
 	 	if (defined("CURLNAT_MISSING_ABORT") && CURLNAT_MISSING_ABORT) {
 	 		return;

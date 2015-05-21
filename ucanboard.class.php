@@ -1,13 +1,6 @@
 <?php
-require_once(dirname(__FILE__)."/curl.php");
+require_once(_XE_PATH_."modules/UCAN-XE-Board/ucanboard.function.php");
 
-function json_decode2($json) {
-	$json = substr($json, strpos($json,'{')+1, strlen($json)); 
-	$json = substr($json, 0, strrpos($json,'}')); 
-	$json = preg_replace('/(^|,)([\\s\\t]*)([^:]*) (([\\s\\t]*)):(([\\s\\t]*))/s', '$1"$3"$4:', trim($json)); 
-
-	return json_decode('{'.$json.'}', true); 
-}
 
 class ucanboard extends ModuleObject {
 	const REMOTE_HOST = "api.bbs.ucan.or.kr";

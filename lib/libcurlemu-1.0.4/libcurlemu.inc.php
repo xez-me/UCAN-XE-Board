@@ -102,10 +102,10 @@
 if (!extension_loaded('curl') && !function_exists('curl_init')) {
 	define('CURLEXT_MISSING_ABORT',true);
 	if (!LIBCURLEMU_NATIVE) {
-		require_once(dirname(__FILE__)."/libcurlexternal.inc.php");
+		require_once(dirname(__FILE__) . "/libcurlexternal.inc.php");
 	} else {
-		if (!class_exists('HTTPRetriever')) require_once(dirname(__FILE__)."/class_HTTPRetriever.php");
-		require_once(dirname(__FILE__)."/libcurlnative.inc.php");
+		if (!class_exists('HTTPRetriever')) require_once(dirname(__FILE__) . "/class_HTTPRetriever.php");
+		require_once(dirname(__FILE__) . "/libcurlnative.inc.php");
 	}
 }
 ?>
