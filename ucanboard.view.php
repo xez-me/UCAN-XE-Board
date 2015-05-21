@@ -289,6 +289,7 @@ class ucanboardView extends ucanboard {
 		$session = curl_init();
 		@curl_setopt($session, CURLOPT_GET, true);
 		curl_setopt($session, CURLOPT_HEADER, false);
+        curl_setopt($session,CURLOPT_ENCODING , "gzip");
 		curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($session, CURLOPT_HTTPHEADER, $request_header);
 		$url = sprintf("http://%s%s", self::REMOTE_HOST, $url);

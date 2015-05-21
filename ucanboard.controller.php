@@ -43,6 +43,7 @@ class ucanboardController extends ucanboard {
 		$request_header[] = 'X-UCAN-Version: 0.4.5';
 
 		$session = curl_init();
+        curl_setopt($session,CURLOPT_ENCODING , "gzip");
 		if ($method == 'POST') {
 			@curl_setopt($session, CURLOPT_POST, true);
 			curl_setopt($session, CURLOPT_POSTFIELDS, $request_body);
