@@ -64,6 +64,7 @@ class ucanboardAdminView extends ucanboard {
 		}
 
 		Context::set('access_token', $config->access_token);
+		Context::set('sanitize_html', $config->sanitize_html);
 		Context::set('modules', $modules);
 
 		$this->setTemplateFile('adminList');

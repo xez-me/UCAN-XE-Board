@@ -1,11 +1,13 @@
 <?php
-require 'modules/document/document.item.php';
-require 'modules/comment/comment.item.php';
+require_once(dirname(__FILE__)."/curl.php");
+require_once(dirname(__FILE__)."/htmlpurifier.php");
+require_once('modules/document/document.item.php');
+require_once('modules/comment/comment.item.php');
 
 class ucanDummyCommentItem extends commentItem {
 	var $sitecode;
 
-	function __construct($sitecode, &$comment) {
+	function __construct($sitecode, &$comment, $filter_html = false) {
 		$this->sitecode = $sitecode;
 
 		$this->comment_srl = $comment->id;
@@ -14,7 +16,12 @@ class ucanDummyCommentItem extends commentItem {
 		$this->variables['member_srl'] = $comment->user_id;
 		$this->variables['user_id'] = $comment->user_id;
 		$this->variables['site_code'] = $comment->site_code;
-		$this->variables['content'] = $comment->body;
+
+		if ($filter_html && function_exists('sanitize_user_html')) {
+			$this->variables['content'] = sanitize_user_html($comment->body);
+		} else {
+			$this->variables['content'] = $comment->body;
+		}
 		$this->variables['module_srl'] = $this->variables['module_srl'];
 		$this->variables['comment_srl'] = $comment->id;
 		$this->variables['document_srl'] = $comment->post_id;
@@ -48,8 +55,9 @@ class ucanDummyDocumentItem extends documentItem {
 	var $comment_list = array();
 	var $sitecode;
 
-	function __construct($sitecode, &$post, &$logged_info) {
+	function __construct($sitecode, &$post, &$logged_info, $filter_html = false) {
 		$this->sitecode = $sitecode;
+		$this->filter_html = $filter_html;
 
 		$this->document_srl = $post->id;
 		$this->lang_code = 'ko';
@@ -58,7 +66,13 @@ class ucanDummyDocumentItem extends documentItem {
 		$this->variables['member_srl'] = NULL;
 		$this->variables['user_id'] = $post->user_id;
 		$this->variables['title'] = strip_tags($post->title);
-		$this->variables['content'] = $post->body;
+
+		if ($filter_html && function_exists('sanitize_user_html')) {
+			$this->variables['content'] = sanitize_user_html($post->body);
+		} else {
+			$this->variables['content'] = $post->body;
+		}
+
 		$this->variables['is_notice'] = $post->is_notice ? 'Y' : 'N';
 		$this->variables['site_code'] = $post->site_code;
 		$this->variables['module_srl'] = $this->module_srl;
@@ -79,7 +93,7 @@ class ucanDummyDocumentItem extends documentItem {
 		}
 
 		foreach ($post->comments as $comment) {
-			$item = new ucanDummyCommentItem($this->sitecode, $comment);
+			$item = new ucanDummyCommentItem($this->sitecode, $comment, $this->filter_html);
 			$this->comment_list[$comment->id] = $item;
 		}
 	}
@@ -194,7 +208,7 @@ class ucanboardView extends ucanboard {
 			$url = sprintf("/posts/%s", $document_srl);
 			$json = $this->getJSON($url, $config, $logged_info);
 			if ($json->post) {
-				$oDocument = new ucanDummyDocumentItem($config->sitecode, $json->post, $logged_info);
+				$oDocument = new ucanDummyDocumentItem($config->sitecode, $json->post, $logged_info, $config->sanitize_html == 1);
 				$reads = $_COOKIE['ucnb_reads'] ? explode(',', $_COOKIE['ucnb_reads']) : array();
 				if (!in_array($document_srl, $reads)) {
 					$reads[] = $document_srl;
@@ -230,7 +244,7 @@ class ucanboardView extends ucanboard {
 			$post_list = array();
 			$notice_list = array();
 			foreach ($json->posts as $post) {
-				$doc = new ucanDummyDocumentItem($config->sitecode, $post, $logged_info);
+				$doc = new ucanDummyDocumentItem($config->sitecode, $post, $logged_info, $config->sanitize_html == 1);
 				if ($post->is_notice) {
 					$notice_list[$post->id] = $doc;
 				} else {
@@ -405,7 +419,7 @@ class ucanboardView extends ucanboard {
 		$url = sprintf("/posts/%s", $document_srl);
 		$json = $this->getJSON($url, $config, $logged_info);
 		if ($json && $json->post) {
-			return new ucanDummyDocumentItem($config->sitecode, $json->post, $logged_info);
+			return new ucanDummyDocumentItem($config->sitecode, $json->post, $logged_info, $config->sanitize_html == 1);
 		}
 
 		return null;

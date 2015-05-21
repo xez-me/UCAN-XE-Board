@@ -27,7 +27,7 @@
 		<permission action="dispUcanboardAdminGrantInfo" target="manager" />
 		<permission action="procUcanboardAdminUpdate" target="manager" />
 		<permission action="procUcanboardAdminDelete" target="manager" />
-		<permission action="procUcanboardAdminUpdateAccessToken" target="manager" />
+		<permission action="procUcanboardAdminUpdateConfig" target="manager" />
 	</permissions>
 	<actions>
 		<action name="dispUcanboardList" type="view" index="true" />
@@ -45,6 +45,6 @@
 		<action name="dispUcanboardAdminGrantInfo" type="view" setup_index="true" />
 		<action name="procUcanboardAdminUpdate" type="controller" standalone="true" />
 		<action name="procUcanboardAdminDelete" type="controller" standalone="true" />
-		<action name="procUcanboardAdminUpdateAccessToken" type="controller" standalone="true" />
+		<action name="procUcanboardAdminUpdateConfig" type="controller" standalone="true" />
 	</actions>
 </module>

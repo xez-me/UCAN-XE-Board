@@ -37,10 +37,11 @@ class ucanboardAdminController extends ucanboard {
 		header('location:'.$returnUrl);
 	}
 
-	function procUcanboardAdminUpdateAccessToken() {
+	function procUcanboardAdminUpdateConfig() {
 		$oModuleController = getController('module');
 		$args = new stdclass;
 		$args->access_token = Context::get('access_token');
+		$args->sanitize_html = !Context::get('sanitize_html') ? 0 : 1;
 		$oModuleController->updateModuleConfig('ucanboard', $args);
 
 		$returnUrl = getNotEncodedUrl('', 'module', 'admin', 'act', 'dispUcanboardAdminList');

@@ -2,7 +2,7 @@
 
 <form action="./" method="post">
 	<input type="hidden" name="module" value="ucanboard" />
-	<input type="hidden" name="act" value="procUcanboardAdminUpdateAccessToken" />
+	<input type="hidden" name="act" value="procUcanboardAdminUpdateConfig" />
 	<input type="hidden" name="module_srl" value="{$module_srl}" />
 	<div class="table">
 		<table width="100%" border="1" cellspacing="0">
@@ -21,6 +21,16 @@
 				<strong>{$site_code}</strong> ({$site_name})
 				<!--@end-->
 				<p>{$lang->ucan_about_sitecode}</p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row" style="width:100px">{$lang->ucan_sanitize_html}</th>
+			<td class="text">
+				<label>
+					<input type="checkbox" name="sanitize_html" value="1" checked="checked"|cond="$sanitize_html==1" />
+					사용
+				</label>
+				<p>{$lang->ucan_about_sanitize_html}</p>
 			</td>
 		</tr>
 		</table>

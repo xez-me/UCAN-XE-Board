@@ -33,4 +33,10 @@
 	<item name="ucan_access_token">
 		<value xml:lang="ko"><![CDATA[Access Token]]></value>
 	</item>
+	<item name="ucan_sanitize_html">
+		<value xml:lang="ko"><![CDATA[HTML 필터링]]></value>
+	</item>
+	<item name="ucan_about_sanitize_html">
+		<value xml:lang="ko"><![CDATA[HTML 2차 필터링 기능을 사용해 보안을 강화합니다. 모듈 동작 속도가 느려질 수 있습니다.]]></value>
+	</item>
 </lang>
