@@ -207,7 +207,7 @@ class ucanboardController extends ucanboard {
 			return false;
 		}
 
-		unset($_SERSSION[self::SESSION_KEY]);
+		unset($_SESSION[self::SESSION_KEY]);
 
 		return true;
 	}
