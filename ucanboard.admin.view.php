@@ -51,16 +51,18 @@ class ucanboardAdminView extends ucanboard {
 				$modules[] = $module_info;
 			}
 		} else {
-			$module_info = $oModuleModel->getModuleInfoByModuleSrl($output->data->module_srl);
-			$module_info->ucan_originboard_exist = false;
-			foreach ($ucan['boards'] as &$board) {
-				if ($board['name'] == $module_info->ucan_originboard) {
-					$module_info->ucan_originboard_title = $board['title'];
-					$module_info->ucan_originboard_exist = true;
-					break;
+			if (is_array($ucan['boards'])) {
+				$module_info = $oModuleModel->getModuleInfoByModuleSrl($output->data->module_srl);
+				$module_info->ucan_originboard_exist = false;
+				foreach ($ucan['boards'] as &$board) {
+					if ($board['name'] == $module_info->ucan_originboard) {
+						$module_info->ucan_originboard_title = $board['title'];
+						$module_info->ucan_originboard_exist = true;
+						break;
+					}
 				}
+				$modules[] = $module_info;
 			}
-			$modules[] = $module_info;
 		}
 
 		Context::set('access_token', $config->access_token);
