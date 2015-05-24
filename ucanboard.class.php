@@ -31,6 +31,7 @@ class ucanboard extends ModuleObject {
 		$session = curl_init();
 		curl_setopt($session, CURLOPT_POST, true);
 		curl_setopt($session, CURLOPT_URL, sprintf("http://%s/handshake", self::REMOTE_HOST));
+		curl_setopt($session,CURLOPT_ENCODING, 'gzip');
 		curl_setopt($session, CURLOPT_HEADER, false);
 		curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($session, CURLOPT_HTTPHEADER, array(

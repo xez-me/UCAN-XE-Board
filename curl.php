@@ -1,7 +1,10 @@
 <?php
 define('LIBCURLEMU_NATIVE', true);
 
-require_once(dirname(__FILE__)."/libcurlemu-1.0.4/libcurlemu.inc.php");
+if(in_array  ('curl', get_loaded_extensions()) === false)
+{
+    require_once(dirname(__FILE__) . "/libcurlemu-1.0.4/libcurlemu.inc.php");
+}
 
 if (!function_exists('http_response_code')) {
 	function http_response_code($code = NULL) {
