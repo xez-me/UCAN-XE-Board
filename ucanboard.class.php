@@ -1,5 +1,15 @@
 <?php
 require_once(dirname(__FILE__)."/curl.php");
+require_once(dirname(__FILE__)."/curl.php");
+require_once(dirname(__FILE__)."/htmlpurifier.php");
+require_once('modules/document/document.item.php');
+require_once('modules/comment/comment.item.php');
+
+
+
+
+require_once(_XE_PATH_.'modules/ucanboard/ucanboard.server_input_sanitize.class.php');
+
 
 function json_decode2($json) {
 	$json = substr($json, strpos($json,'{')+1, strlen($json)); 
@@ -43,6 +53,9 @@ class ucanboard extends ModuleObject {
 		curl_close($session);
 
 		$json = json_decode2($response_body);
+
+        $santizie = new ucanboardServerInputSanitize();
+        $json = $santizie->sanitize($json);
 
 		return array('site' => $json['site'], 'boards' => $json['boards']);
 	}

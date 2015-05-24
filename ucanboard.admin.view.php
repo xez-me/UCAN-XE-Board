@@ -107,6 +107,8 @@ class ucanboardAdminView extends ucanboard {
 
 	function handshake($access_token) {
 		$ucan = parent::handshake($access_token);
+
+
 		Context::set('boards', $ucan['boards']);
 		Context::set('site_error', !$ucan['site']['code'] || !$ucan['site']['name']);
 		Context::set('site_code', $ucan['site']['code']);

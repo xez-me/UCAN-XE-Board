@@ -1,5 +1,4 @@
 <?php
-require_once(dirname(__FILE__)."/curl.php");
 
 class ucanboardController extends ucanboard {
 	function init() {

@@ -1,8 +1,4 @@
 <?php
-require_once(dirname(__FILE__)."/curl.php");
-require_once(dirname(__FILE__)."/htmlpurifier.php");
-require_once('modules/document/document.item.php');
-require_once('modules/comment/comment.item.php');
 
 class ucanDummyCommentItem extends commentItem {
 	var $sitecode;
@@ -462,8 +458,13 @@ class ucanboardView extends ucanboard {
 
 		$response_body = curl_exec($session);
 		$json = json_decode($response_body);
-		return $json;
+
+        $sanitizer = new ucanboardServerInputSanitize();
+        $json = $sanitizer->sanitize($json);
+
+        return $json;
 	}
+
 
 	function getListConfig($module_srl) {
 		$oModuleModel = getModel('module');
