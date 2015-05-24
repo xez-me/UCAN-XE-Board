@@ -190,23 +190,20 @@ class ucanboardController extends ucanboard {
 			return false;
 		}
 
-		$token_expires = $_SESSION[self::SESSION_KEY][self::CSRF_EXPIRE_SESSION_KEY];
+
 		$stored_token = $_SESSION[self::SESSION_KEY][self::CSRF_VALUE_SESSION_KEY];
 		$request_token = $_SERVER['HTTP_X_XE_UCAN_CSRFTOKEN'];
 
-		if (!$token_expires || !$stored_token || !$request_token) {
+		if (!$stored_token || !$request_token) {
 			return false;
 		}
 
-		if ($token_expires + self::CSRF_EXPIRE_SECOND < time()) {
-			return false;
-		}
 
 		if ($stored_token != $request_token) {
 			return false;
 		}
 
-		unset($_SERSSION[self::SESSION_KEY]);
+		unset($_SESSION[self::SESSION_KEY]);
 
 		return true;
 	}

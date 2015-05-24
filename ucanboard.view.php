@@ -512,11 +512,14 @@ class ucanboardView extends ucanboard {
 	}
 
 	function generateCSRFToken() {
-		$hash = base64_encode(openssl_random_pseudo_bytes(16));
-		$_SESSION[self::SESSION_KEY][self::CSRF_VALUE_SESSION_KEY] = $hash;
-		$_SESSION[self::SESSION_KEY][self::CSRF_EXPIRE_SESSION_KEY] = time() + self::CSRF_EXPIRE_SECOND;
 
-		return $hash;
+        if(isset($_SESSION[self::SESSION_KEY][self::CSRF_VALUE_SESSION_KEY]) === false)
+        {
+            $hash = base64_encode(openssl_random_pseudo_bytes(16));
+            $_SESSION[self::SESSION_KEY][self::CSRF_VALUE_SESSION_KEY] = $hash;
+
+        }
+		return $_SESSION[self::SESSION_KEY][self::CSRF_VALUE_SESSION_KEY];
 	}
 }
 ?>

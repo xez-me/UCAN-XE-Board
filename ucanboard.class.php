@@ -14,8 +14,6 @@ class ucanboard extends ModuleObject {
 
 	const SESSION_KEY = 'XE_UCANBOARD';
 	const CSRF_VALUE_SESSION_KEY = 'csrf_token';
-	const CSRF_EXPIRE_SESSION_KEY = 'csrf_expires';
-	const CSRF_EXPIRE_SECOND = 3600;
 
 	function moduleInstall() {
 		$oModuleController = &getController('module');
